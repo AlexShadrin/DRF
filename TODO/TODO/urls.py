@@ -25,12 +25,14 @@ urlpatterns = [
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from authors.views import AuthorModelViewSet, BiographiesModelViewSet, BookModelViewSet
+from authors.views import AuthorModelViewSet, BiographiesModelViewSet, BookModelViewSet, BookDjangoFilterViewSet, BookLimitOffsetPaginatonViewSet
 
 router = DefaultRouter()
 router.register('authors', AuthorModelViewSet)
 router.register('biographies', BiographiesModelViewSet)
 router.register('books', BookModelViewSet)
+router.register('book_model_view', BookDjangoFilterViewSet)
+router.register('book_p', BookLimitOffsetPaginatonViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
