@@ -7,7 +7,13 @@ from rest_framework.pagination import LimitOffsetPagination
 from authors.filters import BookFilter
 from .models import Author, Biographies, Book
 from .serializers import AuthorModelSerializer, BiographiesHyperlinkedModelSerializer, BookModelSerializer
+from rest_framework.permissions import AllowAny, BasePermission
 
+class SuperUserOnly(BasePermission):
+
+    def has_permission(self, request, view):
+        return request.user.is_superuser
+    
 class AuthorModelViewSet(ModelViewSet):
     renderer_classes = [JSONRenderer, BrowsableAPIRenderer]
     queryset = Author.objects.all()
