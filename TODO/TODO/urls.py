@@ -33,9 +33,11 @@ router.register('biographies', BiographiesModelViewSet)
 router.register('books', BookModelViewSet)
 router.register('book_model_view', BookDjangoFilterViewSet)
 router.register('book_p', BookLimitOffsetPaginatonViewSet)
+from rest_framework.authtoken import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
     path('api/', include(router.urls)),
+    path('api-token-auth/', views.obtain_auth_token),
 ]
