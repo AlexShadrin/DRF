@@ -6,7 +6,7 @@ from rest_framework.pagination import LimitOffsetPagination
 
 from authors.filters import BookFilter
 from .models import Author, Biographies, Book
-from .serializers import AuthorModelSerializer, BiographiesHyperlinkedModelSerializer, BookModelSerializer
+from .serializers import AuthorModelSerializer, BiographiesHyperlinkedModelSerializer, BookModelSerializer, AuthorCustomModelSerializer, BookCustomModelSerializer
 from rest_framework.permissions import AllowAny, BasePermission
 
 class SuperUserOnly(BasePermission):
@@ -19,6 +19,11 @@ class AuthorModelViewSet(ModelViewSet):
     queryset = Author.objects.all()
     serializer_class = AuthorModelSerializer
 
+    def get_serializer_class(self):
+        if self.request.version == 'v2':
+            return AuthorCustomModelSerializer
+        return AuthorModelSerializer
+
 class BiographiesModelViewSet(ModelViewSet):
     queryset = Biographies.objects.all()
     serializer_class = BiographiesHyperlinkedModelSerializer
@@ -26,6 +31,11 @@ class BiographiesModelViewSet(ModelViewSet):
 class BookModelViewSet(ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookModelSerializer
+
+    def get_serializer_class(self):
+        if self.request.version == 'v2':
+            return BookCustomModelSerializer
+        return BookModelSerializer
 
 class BookDjangoFilterViewSet(ModelViewSet):
    queryset = Book.objects.all()
