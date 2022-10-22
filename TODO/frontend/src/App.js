@@ -9,6 +9,7 @@ import NotFound404 from "./components/NotFound404";
 import BooksAuthors from "./components/BooksAuthors";
 import LoginForm from "./components/Auth";
 import Cookies from "universal-cookie";
+import BookForm from "./components/BookForm";
 
 class App extends React.Component {
     constructor(props) {
@@ -19,6 +20,28 @@ class App extends React.Component {
             'token':'',
         }
     }
+
+    create_book(name, authors) {
+        const headers = this.get_headers()
+        const data = {name: name, authors: authors}
+        axios.post('http://127.0.0.1:8007/api/books/',data,{headers}).then(response => {
+            this.load_data()
+        }).catch(error => {
+            console.log(error)
+            this.setState({books: []})
+        })
+    }
+
+    delete_book(id) {
+        const headers = this.get_headers()
+        axios.delete('http://127.0.0.1:8007/api/books/${id}', {headers}).then(response => {
+            this.load_data()
+        }).catch(error => {
+            console.log(error)
+            this.setState({books: []})
+        })
+    }
+
 
      get_token(username, password) {
        const data = {username:username,password:password}
@@ -99,7 +122,10 @@ class App extends React.Component {
                             <Route path=':authorId' element={<BooksAuthors books={this.state.books}/>}/>
                         </Route>
 
-                        <Route exact path ='/books' element={<BookList books={this.state.books}/>} />
+                        <Route exact path ='/books' element={<BookList books={this.state.books} delete_book={(id) => this.delete_book(id)}/>} />
+                        <Route exact path='/books/create'
+                               element={<BookForm authors={this.state.authors}
+                                                  create_book={(name,authors) => this.create_book(name,authors)}/>}/>
                         <Route exact path='/login' element={<LoginForm
                             get_token={(username, password) => this.get_token(username, password)}/>}/>
                         <Route path='*' element={<NotFound404/>}/>
