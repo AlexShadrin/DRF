@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'userapp',
     'drf_yasg',
+    'graphene_django',
 
     'rest_framework',
     'django_filters',
@@ -157,4 +158,8 @@ REST_FRAMEWORK = {
     # 'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.HostNameVersioning', #http://v1.example.com/book
     # 'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.QueryParameterVersioning',
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.AcceptHeaderVersioning',
+}
+
+GRAPHENE = {
+    "SCHEMA":'TODO.schema.schema'
 }
