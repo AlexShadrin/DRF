@@ -110,7 +110,10 @@ class App extends React.Component {
                         <li>
                             <Link to='/books'>Books</Link>
                         </li>
-                         <li>
+                        <li>
+                            <Link to='/books/create'>Book create</Link>
+                        </li>
+                        <li>
                             {this.is_auth() ? <button onClick={ ()=>this.logout()}>Logout </button> : <Link to='/login'>Login</Link>}
                         </li>
                     </nav>

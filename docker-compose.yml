@@ -1,0 +1,44 @@
+version: '3.1'
+
+services:
+  db:
+#    env_file:
+#      - .env
+    image: postgres:13.1
+    privileged: true
+    restart: always
+#    volumes:
+#      -  data-psql-backend:/var/lib/postgresql/data/
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: django
+      POSTGRES_PASSWORD: 1
+      POSTGRES_DB: db
+  backend:
+#    container_name: 'backend_django_now'
+    build:
+      context: ./TODO
+#    image: backend_django:1.0.0
+    ports:
+      - 8080:8080
+#    expose:
+#      - 8080
+    command: bash -c "python manage.py migrate && python manage.py create_user && gunicorn TODO.wsgi -b 0.0.0.0:8080"
+    depends_on:
+      - db
+  nginx:
+    build: ./nginx
+    ports:
+      - 8010:80
+    depends_on:
+      - backend
+  frontend:
+    build: ./frontend
+    ports:
+      - 80:80
+    depends_on:
+      - nginx
+
+#volumes:
+#  data-psql-backend:
